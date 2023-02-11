@@ -32,15 +32,38 @@ h1 {
     font-size: 40px;
     text-align: center;
     color: var(--white);
+    margin-top: 28px !important;
 }
 
 header {
     background: var(--nightBackground);
     width: 100%;
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
     z-index: 999;
+    height: 104px;
 }
+
+.search-box {
+    margin-top: 104px;
+}
+
+.weather-search {
+    /* width: 280px; */
+    border-radius: 4px;
+    /* height: 40px; */
+}
+
+.btn {
+   /*  width: 280px; */
+}
+
+.weather-search::placeholder {
+    margin-left: 10px; /* adjust this value to set the margin size */
+  }
+
+
 
 
