@@ -24,10 +24,17 @@
 // https://api.openweathermap.org/data/2.5/forecast?lat=57&lon=-2.15&appid={API key}&units=metric
 
 
-const apiKey = '2253c82eaacce5516e8db0f622c8e22a';
+const apiKeyWeather = '2253c82eaacce5516e8db0f622c8e22a';
 const cityInput = document.querySelector('#search-city');
 const submitBtn = document.querySelector('#search-button');
 const clearBtn = document.querySelector('#clear-button');
+
+
+// EVENT LISTENER FOR SUBMIT BUTTON TO GET CITY
+
+
+
+ 
 
 
 
