@@ -71,26 +71,20 @@ if ($("#search-city").val() != "" ){
     savedButton.classList.add("btn", "search-button");
     savedButton.setAttribute("id", "savee-button");
     savedButton.setAttribute("data-id", $("#search-city").val());
-    savedButton.innerHTML = savedLocations[i];
+    savedButton.innerHTML = savedLocations;
     btnList.appendChild(savedButton);
     
     for (var i = 0; i < savedLocations.length; i++) {
-      savedButton.innerHTML = savedLocations[i];
-      btnList.appendChild(savedButton);
+    savedButton.innerHTML = savedLocations[i];
+    btnList.appendChild(savedButton);
     }
     
     // Add the new location to the list of saved locations
     savedLocations.push(locationEntry);
     localStorage.setItem("locations", JSON.stringify(savedLocations));
-
 }
 
-// clear and reload the page when user clicks on clear history button
-$("#clear-button").click(function(event) {
-    event.preventDefault();
-    localStorage.clear();
-    location.reload();
-})
+
 
 
 
@@ -120,6 +114,13 @@ $("#clear-button").click(function(event) {
 
   });
 });
+
+// clear and reload the page when user clicks on clear history button
+$("#clear-button").click(function(event) {
+    event.preventDefault();
+    localStorage.clear();
+    location.reload();
+})
 
 
 
