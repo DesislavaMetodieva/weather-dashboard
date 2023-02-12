@@ -85,6 +85,13 @@ if ($("#search-city").val() != "" ){
 
 }
 
+// clear and reload the page when user clicks on clear history button
+$("#clear-button").click(function(event) {
+    event.preventDefault();
+    localStorage.clear();
+    location.reload();
+})
+
 
 
 
@@ -113,6 +120,10 @@ if ($("#search-city").val() != "" ){
 
   });
 });
+
+
+
+
 
 
 
