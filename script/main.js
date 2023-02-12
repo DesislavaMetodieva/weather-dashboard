@@ -30,6 +30,7 @@ const APIKey = '2253c82eaacce5516e8db0f622c8e22a';
 const cityInput = document.querySelector('#search-city');
 const submitBtn = document.querySelector('#search-button');
 const clearBtn = document.querySelector('#clear-button');
+const btnList = document.querySelector('.btnList');
 
 const forecast = document.querySelector('#forecast');
 const input = document.querySelector('.form-input');
@@ -55,8 +56,40 @@ $(".submit-btn").click(function(event) {
     locationEntry = ($("#search-city").val());
     console.log(locationEntry);
 
+// local storage
+
+if ($("#search-city").val() != "" ){ 
+
+
+    localStorage.setItem("location", locationEntry);
+    
+    var savedLocation = localStorage.getItem("location");
+    
+    var savedLocations = JSON.parse(localStorage.getItem("locations")) || [];
+
+    var savedButton = document.createElement("button");
+    savedButton.classList.add("btn", "search-button");
+    savedButton.setAttribute("id", "savee-button");
+    savedButton.setAttribute("data-id", $("#search-city").val());
+    savedButton.innerHTML = savedLocations[i];
+    btnList.appendChild(savedButton);
+    
+    for (var i = 0; i < savedLocations.length; i++) {
+      savedButton.innerHTML = savedLocations[i];
+      btnList.appendChild(savedButton);
+    }
+    
+    // Add the new location to the list of saved locations
+    savedLocations.push(locationEntry);
+    localStorage.setItem("locations", JSON.stringify(savedLocations));
+
+}
+
+
+
 
   // CALL TO GEO API FOR LAT AND LON
+
   var apiKeyWeather = "def3fa492eb50ea6560f2cae7d9d29e7";
   var queryUrlGeocode = "https://api.openweathermap.org/geo/1.0/direct?q="+ locationEntry + "&limit=1&appid="+ apiKeyWeather;
   $.ajax({
@@ -65,18 +98,22 @@ $(".submit-btn").click(function(event) {
   }).then(function(response) {
       var lat = response[0].lat;
       var lon = response[0].lon;
-      var queryUrlWeather = "https://api.openweathermap.org/data/2.5/weather?lat="+ lat + "&lon=" + lon +"&appid=" + apiKeyWeather + "&units=metric";
-      
+      var queryUrlWeather = "https://api.openweathermap.org/data/2.5/forecast?lat="+ lat + "&lon=" + lon +"&appid=" + apiKeyWeather + "&units=metric";
+
   // CALL TO WEATHER API FOR CURRENT WEATHER
   $.ajax({
       url: queryUrlWeather,
       method: "GET"
   }).then(function(response) {
      console.log(response) // <<< THIS IS API RESPONSE AFTER YOU ENTER CITY NAME AND PRESS SEARCH
+
+ 
+     
     }); 
 
   });
 });
+
 
 
     
