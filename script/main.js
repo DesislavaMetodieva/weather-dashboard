@@ -104,42 +104,113 @@ if ($("#search-city").val() != "" ){
       url: queryUrlWeather,
       method: "GET"
   }).then(function(response) {
-     console.log(response) // <<< THIS IS API RESPONSE AFTER YOU ENTER CITY NAME AND PRESS SEARCH
- 
+      console.log(response) // <<< THIS IS API RESPONSE AFTER YOU ENTER CITY NAME AND PRESS SEARCH
 
-    var today = moment().format("GGGG-MM-DD");
-    var currentDay = parseInt(moment().format("DD"));
 
-    
-    // Traversing current temperature at the searched Location
-    var cityName;
-    cityName = response.city.name;
-    var cityLocation = $('#currentCity');
-    cityLocation.text(cityName + " (" + today + ")");
+      var today = moment().format("DD-MM-GGGG");
+      var counter;
+      var addition;
+      //  var currentDay = parseInt(moment().format("DD"));
 
-    // T
-    var currentTemp;
-    currentTemp = response.list[0].main.temp;
-    var tempP = $('#currentTemp');
-    tempP.text("Temp: "+ currentTemp + "°C");
-    
-   var currentWind;
-   currentWind = response.list[0].wind.speed;
-   var windP = $('#currentWind');
-   console.log(currentWind)
-   windP.text("Wind Speed: " + currentWind + " KPH");
+      // Traversing searched Location
+      var cityName;
+      cityName = response.city.name;
+      var cityLocation = $('#currentCity');
+      cityLocation.text(cityName + " (" + today + ")");
 
-   var currentHumid;
-   currentHumid = response.list[0].main.humidity;
-   var humidP = $('#currentHumid');
-   humidP.text("Humidity: " + currentHumid + "%");
+      // Traversing current temperature at the searched Location
+      var currentTemp;
+      currentTemp = response.list[0].main.temp;
+      var tempP = $('#currentTemp');
+      tempP.text("Temp: "+ currentTemp + "°C");
 
-   var weatherIcon;
-   weatherIcon = response.list[0].weather[0].icon;
-   var weatherIconImg = $('#weatherIcon');
-   $("#weatherIcon").attr("src", "http://openweathermap.org/img/wn/" + weatherIcon + ".png");
+      var weatherIcon;
+      weatherIcon = response.list[0].weather[0].icon;
+      var weatherIconImg = $('#weatherIcon');
+      $("#weatherIcon").attr("src", "http://openweathermap.org/img/wn/" + weatherIcon + ".png");
 
-}); 
+      // Traversing current wind speed at the searched Location
+      var currentWind;
+      currentWind = response.list[0].wind.speed;
+      var windP = $('#currentWind');
+      console.log(currentWind)
+      windP.text("Wind Speed: " + currentWind + " KPH");
+
+      // Traversing current humidity at the searched Location
+      var currentHumid;
+      currentHumid = response.list[0].main.humidity;
+      var humidP = $('#currentHumid');
+      humidP.text("Humidity: " + currentHumid + "%");
+
+      // Traversing weather icon
+      var weatherIcon;
+      weatherIcon = response.list[0].weather[0].icon;
+      var weatherIconImg = $('#weatherIcon');
+      $("#weatherIcon").attr("src", "http://openweathermap.org/img/wn/" + weatherIcon + ".png");
+
+      // 5-day forecast
+
+     
+      
+
+      var fiveDayForecast = [];
+
+      for (var i = 0; i < response.list.length; i++) {
+      console.log(response)
+      var date = response.list[i].dt_txt;
+      var time = date.slice(11, 13);
+      if (time === "00") {
+        var day = {
+          date: response.list[counter + addition].dt_txt.slice(0, 10),
+          temp: response.list[i].main.temp,
+          wind: response.list[0].wind.speed,
+          humidity: response.list[i].main.humidity
+        };
+        fiveDayForecast.push(day);
+        if (fiveDayForecast.length === 5) {
+          break;
+        }
+      }
+    }
+
+
+      // create a container for the 5-day forecast
+      var forecastContainer = $('<div>');
+      forecastContainer.addClass('forecast-container');
+
+      // loop through the 5-day forecast data
+      for (var i = 0; i < 5; i++) {
+        // create a div for each day
+        var forecastDay = $('<div>');
+        forecastDay.addClass('forecast-day');
+
+        var header = $("<h3>").text(date);
+
+
+        // create elements to display the location, temperature, and humidity
+        var location = $('<p>');
+        location.text('Location: ' + forecastData[i].location);
+
+        var temperature = $('<p>');
+        temperature.text('Temperature: ' + forecastData[i].temperature + '°C');
+
+        var humidity = $('<p>');
+        humidity.text('Humidity: ' + forecastData[i].humidity + '%');
+
+        // append the location, temperature, and humidity to the forecast day div
+        forecastDay.append(header);
+        forecastDay.append(location);
+        forecastDay.append(temperature);
+        forecastDay.append(humidity);
+
+        // append the forecast day div to the forecast container
+        forecastContainer.append(forecastDay);
+      }
+
+      // append the forecast container to the page
+      $('#forecast-section').append(forecastContainer);
+      addition += 8;
+  }); 
 
   });
 });
