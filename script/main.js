@@ -108,8 +108,8 @@ if ($("#search-city").val() != "" ){
 
 
       var today = moment().format("DD-MM-GGGG");
-      var counter;
-      var addition;
+      var counter = 0;
+      var addition = 0;
       //  var currentDay = parseInt(moment().format("DD"));
 
       // Traversing searched Location
@@ -151,7 +151,7 @@ if ($("#search-city").val() != "" ){
       // 5-day forecast
 
      
-      
+
 
       var fiveDayForecast = [];
 
