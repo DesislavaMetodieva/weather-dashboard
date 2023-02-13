@@ -69,7 +69,7 @@ if ($("#search-city").val() != "" ){
 
     var savedButton = document.createElement("button");
     savedButton.classList.add("btn", "search-button");
-    savedButton.setAttribute("id", "savee-button");
+    savedButton.setAttribute("id", "save-button");
     savedButton.setAttribute("data-id", $("#search-city").val());
     savedButton.innerHTML = savedLocations;
     btnList.appendChild(savedButton);
@@ -85,14 +85,12 @@ if ($("#search-city").val() != "" ){
 }
 
 
-
-
-
-
   // CALL TO GEO API FOR LAT AND LON
+
 
   var apiKeyWeather = "def3fa492eb50ea6560f2cae7d9d29e7";
   var queryUrlGeocode = "https://api.openweathermap.org/geo/1.0/direct?q="+ locationEntry + "&limit=1&appid="+ apiKeyWeather;
+
   $.ajax({
     url: queryUrlGeocode,
     method: "GET"
@@ -107,20 +105,51 @@ if ($("#search-city").val() != "" ){
       method: "GET"
   }).then(function(response) {
      console.log(response) // <<< THIS IS API RESPONSE AFTER YOU ENTER CITY NAME AND PRESS SEARCH
-
  
-     
-    }); 
+
+    var today = moment().format("GGGG-MM-DD");
+    var currentDay = parseInt(moment().format("DD"));
+
+    
+    // Traversing current temperature at the searched Location
+    var cityName;
+    cityName = response.city.name;
+    var cityLocation = $('#currentCity');
+    cityLocation.text(cityName + " (" + today + ")");
+
+    // T
+    var currentTemp;
+    currentTemp = response.list[0].main.temp;
+    var tempP = $('#currentTemp');
+    tempP.text("Temp: "+ currentTemp + "°C");
+    
+   var currentWind;
+   currentWind = response.list[0].wind.speed;
+   var windP = $('#currentWind');
+   console.log(currentWind)
+   windP.text("Wind Speed: " + currentWind + " KPH");
+
+   var currentHumid;
+   currentHumid = response.list[0].main.humidity;
+   var humidP = $('#currentHumid');
+   humidP.text("Humidity: " + currentHumid + "%");
+
+   var weatherIcon;
+   weatherIcon = response.list[0].weather[0].icon;
+   var weatherIconImg = $('#weatherIcon');
+   $("#weatherIcon").attr("src", "http://openweathermap.org/img/wn/" + weatherIcon + ".png");
+
+}); 
 
   });
 });
 
 // clear and reload the page when user clicks on clear history button
-$("#clear-button").click(function(event) {
-    event.preventDefault();
-    localStorage.clear();
-    location.reload();
-})
+// $("#clear-button").click(function(event) {
+//     event.preventDefault();
+//     localStorage.clear();
+//     location.reload();
+// })
 
 
 
